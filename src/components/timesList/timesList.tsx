@@ -59,21 +59,15 @@ export const TimeList = component$(() => {
     <>
       <CanvasClock store={store} />
       <ul
-        window:onLoad$={() =>
+        window:onLoad$={() => {
           if (loadFromLocalStorage()) {
             //if localStorage is not empty
-          const load = loadFromLocalStorage();
-            //TODO needs be an array
+            store.timeList = [...loadFromLocalStorage()!];
           }
-          store.timeList.map((item) => {
-            console.log("exe");
-            saveToLocalStorage({
-              id: item.id,
-              time: item.time.startTime + "," + item.time.endTime,
-              description: item.description,
-            });
-          })
-        }
+        }}
+        window:onBlur$={() => {
+          saveToLocalStorage(store.timeList);
+        }}
         style={{
           display: "flex",
           flexDirection: "column",

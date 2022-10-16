@@ -1,31 +1,21 @@
-const gameStateKey = "planState";
+const planStateKey = "planState";
 
-type StoredPlanState = {
+export type StoredPlanState = {
   id: string;
-  time: string;
+  time: { startTime: string; endTime: string };
   description: string;
-};
+  isHere: boolean;
+}[];
 
 export const saveToLocalStorage = (planState: StoredPlanState) => {
-  localStorage.setItem(
-    gameStateKey,
-    JSON.stringify({
-      id: planState.id,
-      time: planState.time,
-      description: planState.description,
-    })
-  );
+  localStorage.setItem(planStateKey, JSON.stringify(planState));
 };
 
 export const loadFromLocalStorage = () => {
-  const state = localStorage.getItem(gameStateKey);
+  const state = localStorage.getItem(planStateKey);
   if (state) {
     let nextState: StoredPlanState = JSON.parse(state);
-    nextState = {
-      id: nextState.id,
-      time: nextState.time,
-      description: nextState.description,
-    };
+
     return nextState;
   }
   return null;
