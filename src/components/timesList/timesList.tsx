@@ -22,36 +22,6 @@ export const TimeList = component$(() => {
         description: "",
         isHere: false,
       },
-      {
-        id: "this-time-entry-num-1" + "a",
-        time: { startTime: "14:34", endTime: "15:39" },
-        description: "",
-        isHere: false,
-      },
-      {
-        id: "this-time-entry-num-3" + "a",
-        time: { startTime: "16:34", endTime: "17:39" },
-        description: "",
-        isHere: false,
-      },
-      {
-        id: "this-time-entry-num-2" + "a",
-        time: { startTime: "18:34", endTime: "19:39" },
-        description: "",
-        isHere: false,
-      },
-      {
-        id: "this-time-entry-num-4" + "a",
-        time: { startTime: "20:34", endTime: "21:39" },
-        description: "",
-        isHere: false,
-      },
-      {
-        id: "this-time-entry-num-5" + "a",
-        time: { startTime: "22:34", endTime: "23:39" },
-        description: "",
-        isHere: false,
-      },
     ],
   });
 
@@ -100,7 +70,6 @@ export const TimeList = component$(() => {
                     marginRight: "5rem",
                   }}
                 >
-                  {i === 0 ? <p>Time</p> : <></>}
                   <div style={{ display: "flex", flexDirection: "row" }}>
                     <div style={{ display: "flex", flexDirection: "column" }}>
                       <p style={{ fontWeight: 400 }}>Start time</p>
@@ -153,7 +122,6 @@ export const TimeList = component$(() => {
                     justifyContent: "center",
                   }}
                 >
-                  {i === 0 ? <p>Description</p> : <></>}
                   <textarea
                     cols={40}
                     rows={3}
