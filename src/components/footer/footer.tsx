@@ -3,7 +3,8 @@ export const Footer = component$(() => {
   return (
     <footer>
       <p style={{ textAlign: "center", color: "black" }}>
-        Planningly saves your plan to your browser's local storage. <br />
+        <span className="brand-text">planningly</span> saves your plan to your
+        browser's local storage. <br />
         None of your inputs are being sent to a remote server. <br />
         <br />
         Made by{" "}

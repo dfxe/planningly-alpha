@@ -10,6 +10,7 @@
   --first-color: black;
   --second-color: #aaa;
   --third-color: #ddd;
+  --fourth-color: rgba(1, 1, 1, 0.05);
 
   --execution-color: #d30001;
 
@@ -41,7 +42,18 @@ body {
 }
 h1 {
   font-size: var(--font-size-h1);
-  background: -webkit-linear-gradient(#fff, var(--execution-color));
+  background: -webkit-linear-gradient(
+    var(--third-color),
+    var(--execution-color)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.brand-text {
+  background: -webkit-linear-gradient(
+    var(--third-color),
+    var(--execution-color)
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -83,7 +95,7 @@ button:hover {
 }
 button:disabled {
   background-color: var(--button-disabled);
-  color: var(--third-color);
+  color: var(--fourth-color);
 }
 canvas {
   background-color: rgba(0, 0, 0, 0);
@@ -98,7 +110,7 @@ canvas {
 li.time-plan-row:hover {
   border-radius: var(--border-radius);
   padding: var(--padding-full);
-  background-color: var(--second-color);
+  background-color: var(--fourth-color);
 }
 
 footer {
