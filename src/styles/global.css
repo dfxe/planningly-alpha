@@ -82,7 +82,9 @@ canvas {
 .add-entry-button:disabled {
   color: #ccc;
 }
-
+.time-plan-row {
+  margin: 0 10vw 0 10vw;
+}
 li.time-plan-row:hover {
   background-color: var(--third-color);
 }

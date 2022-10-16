@@ -1,6 +1,10 @@
 import { component$, useStore } from "@builder.io/qwik";
 import { CanvasClock } from "../canvasClock/canvasClock";
 import { colors } from "../canvasClock/canvasClock";
+import {
+  saveToLocalStorage,
+  loadFromLocalStorage,
+} from "../../lib/localStorage";
 export interface ListItem {
   timeList: {
     id: string;
@@ -55,6 +59,21 @@ export const TimeList = component$(() => {
     <>
       <CanvasClock store={store} />
       <ul
+        window:onLoad$={() =>
+          if (loadFromLocalStorage()) {
+            //if localStorage is not empty
+          const load = loadFromLocalStorage();
+            //TODO needs be an array
+          }
+          store.timeList.map((item) => {
+            console.log("exe");
+            saveToLocalStorage({
+              id: item.id,
+              time: item.time.startTime + "," + item.time.endTime,
+              description: item.description,
+            });
+          })
+        }
         style={{
           display: "flex",
           flexDirection: "column",
@@ -144,6 +163,7 @@ export const TimeList = component$(() => {
                   <textarea
                     cols={40}
                     rows={3}
+                    placeholder="some explanatory description..."
                     value={item.description}
                     onChange$={(e) => {
                       item.description = (e.target! as HTMLInputElement).value;
