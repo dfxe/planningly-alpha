@@ -1,10 +1,4 @@
-import {
-  component$,
-  useClientEffect$,
-  $,
-  useRef,
-  useStore,
-} from "@builder.io/qwik";
+import { component$, useClientEffect$, $, useRef } from "@builder.io/qwik";
 import { ListItem } from "../timesList/timesList";
 export const colors = [
   "#54709a",
@@ -32,7 +26,6 @@ interface Props {
 }
 export const CanvasClock = component$(({ store }: Props) => {
   const canvasRef = useRef<HTMLCanvasElement>();
-  const sstore = useStore({ nextAngle: 0 });
 
   const renderTime = $((ctx: CanvasRenderingContext2D | null) => {
     if (!ctx) {
@@ -42,7 +35,7 @@ export const CanvasClock = component$(({ store }: Props) => {
     const formatTime = (time: string): string[] => {
       return time.split(":");
     };
-    const coordCenter = 160;
+    const coordCenter = 120;
     const now = new Date();
     //const today = now.toDateString();
     //const time = now.toLocaleTimeString();
@@ -55,7 +48,7 @@ export const CanvasClock = component$(({ store }: Props) => {
     //round corners for arc
     ctx.lineCap = "round";
     ctx.strokeStyle = "#ccc";
-    ctx.lineWidth = 20;
+
     ctx.shadowBlur = 0;
     ctx.shadowColor = "#ccc";
     // background
@@ -71,39 +64,41 @@ export const CanvasClock = component$(({ store }: Props) => {
     gradient.addColorStop(1, "white");
     ctx.fillStyle = gradient;
     //ctx.fillStyle = "rgba(0 ,0 ,0, 1)";
-    ctx.fillRect(0, 0, 500, 500);
+    ctx.fillRect(0, 0, 300, 300);
 
     // hours
 
-    let i = 0;
     ctx.strokeStyle = "#ccc";
 
     for (const item of store.timeList) {
       // plan time
       // hours start time
-      ctx.strokeStyle = colors[++i];
+
+      ctx.strokeStyle =
+        +item.time.endTime.substring(0, 2) < hrs ? "#ccc" : "#d30001";
 
       if (!item.isHere) {
-        ctx.lineWidth = 20;
+        ctx.lineWidth = 10;
       } else {
         //highlight
-        ctx.lineWidth = 35;
+        ctx.lineWidth = 15;
         ctx.beginPath();
         ctx.arc(
           coordCenter,
           coordCenter,
-          105,
+          60,
           (Math.PI / 180) * (+formatTime(item.time.startTime)[1] * 6 - 90),
           (Math.PI / 180) * (+formatTime(item.time.endTime)[1] * 6 - 90)
         );
 
         ctx.stroke();
       }
+
       ctx.beginPath();
       ctx.arc(
         coordCenter,
         coordCenter,
-        135, // radius
+        94, // radius
         (Math.PI / 180) *
           ((+formatTime(item.time.startTime)[0] - 12) * 30 - 90),
         (Math.PI / 180) * ((+formatTime(item.time.endTime)[0] - 12) * 30 - 90)
@@ -111,14 +106,14 @@ export const CanvasClock = component$(({ store }: Props) => {
       ctx.stroke();
     }
 
-    i = 0;
     ctx.strokeStyle = "#ccc";
+    ctx.lineWidth = 10;
     // minutes
     ctx.beginPath();
     ctx.arc(
       coordCenter,
       coordCenter,
-      105,
+      77,
       (Math.PI / 180) * 270,
       (Math.PI / 180) * (smoothmin * 6 - 90)
     );
@@ -128,22 +123,18 @@ export const CanvasClock = component$(({ store }: Props) => {
     ctx.arc(
       coordCenter,
       coordCenter,
-      75,
+      60,
       (Math.PI / 180) * 270,
       (Math.PI / 180) * (smoothsec * 6 - 90)
     );
     ctx.stroke();
-    /* ctx.fillStyle = "rgba(00, 255, 255, 1)";
-    ctx.fillText(today, 175, 250);
 
-    ctx.fillStyle = "rgba(00, 255, 255, 1)";
-    ctx.fillText(time + ":" + mil, 175, 280); */
     ctx.strokeStyle = "#ccc";
     ctx.beginPath();
     ctx.arc(
       coordCenter,
       coordCenter,
-      135, //start angle
+      94, //start angle
       (Math.PI / 180) * 270,
       (Math.PI / 180) * (hrs * 30 - 90)
     );
@@ -151,11 +142,11 @@ export const CanvasClock = component$(({ store }: Props) => {
     ctx.strokeStyle = "black";
 
     ctx.beginPath();
-    ctx.arc(coordCenter, coordCenter, 135, Math.PI / 180, Math.PI / 180);
+    ctx.arc(coordCenter, coordCenter, 60, Math.PI / 180, Math.PI / 180);
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.arc(coordCenter, coordCenter, 135, Math.PI, Math.PI);
+    ctx.arc(coordCenter, coordCenter, 60, Math.PI, Math.PI);
     ctx.stroke();
   });
 
@@ -168,16 +159,7 @@ export const CanvasClock = component$(({ store }: Props) => {
 
   return (
     <div>
-      {/*  <input
-        type={"range"}
-        min={"0"}
-        max={"720"}
-        onChange$={(e) => {
-          sstore.nextAngle = +(e.target as HTMLInputElement).value;
-          console.log("changinhg", sstore.nextAngle);
-        }}
-      ></input> */}
-      <canvas ref={canvasRef} width="320" height="320"></canvas>
+      <canvas ref={canvasRef} width="240" height="240"></canvas>
     </div>
   );
 });

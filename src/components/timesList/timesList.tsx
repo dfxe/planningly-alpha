@@ -1,6 +1,6 @@
-import { component$, useStore } from "@builder.io/qwik";
+import { component$, useStore, $ } from "@builder.io/qwik";
 import { CanvasClock } from "../canvasClock/canvasClock";
-import { colors } from "../canvasClock/canvasClock";
+
 import {
   saveToLocalStorage,
   loadFromLocalStorage,
@@ -17,13 +17,26 @@ export const TimeList = component$(() => {
   const store = useStore({
     timeList: [
       {
-        id: "this-time-entry-num0" + "a",
+        id: Math.random().toString(16).slice(3, -1),
         time: { startTime: "12:33", endTime: "14:33" },
         description: "",
         isHere: false,
       },
     ],
   });
+
+  const ping = (item): string => {
+    //TODO need to cover minutes too
+    if (
+      +item.time.startTime.substring(0, 2) <= new Date().getHours() &&
+      new Date().getHours() <= +item.time.endTime.substring(0, 2) &&
+      new Date().getMinutes() <= +item.time.endTime.substring(3, 5)
+    ) {
+      console.log("dd");
+      return "current-ping";
+    }
+    return "last-ping";
+  };
 
   return (
     <>
@@ -43,7 +56,7 @@ export const TimeList = component$(() => {
           flexDirection: "column",
         }}
       >
-        {store.timeList.map((item, i) => {
+        {store.timeList.map((item) => {
           return (
             <li
               onMouseEnter$={() => {
@@ -52,10 +65,13 @@ export const TimeList = component$(() => {
                     ? (entry.isHere = true)
                     : (entry.isHere = false)
                 );
-                //console.table(store.timeList);
+              }}
+              onMouseLeave$={() => {
+                store.timeList.map((entry) => (entry.isHere = false));
               }}
               className="time-plan-row"
             >
+              <div className={ping(item)}></div>
               <div
                 style={{
                   display: "flex",
@@ -72,7 +88,14 @@ export const TimeList = component$(() => {
                     marginBottom: "1rem",
                   }}
                 >
-                  <div style={{ display: "flex", flexDirection: "row" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "space-around",
+                    }}
+                  >
                     <div style={{ display: "flex", flexDirection: "column" }}>
                       <p style={{ fontWeight: 400 }}>Start time</p>
                       <input
@@ -119,9 +142,12 @@ export const TimeList = component$(() => {
                     <button
                       onClick$={() => {
                         if (store.timeList.length > 1) {
-                          store.timeList = store.timeList.filter(
-                            (entry) => entry.id !== item.id
-                          );
+                          //TODO Filter function faulty
+                          store.timeList = [
+                            ...store.timeList.filter((entry) => {
+                              entry.id !== item.id;
+                            }),
+                          ];
                           saveToLocalStorage(store.timeList);
                         }
                       }}
@@ -132,6 +158,7 @@ export const TimeList = component$(() => {
                         viewBox="0 0 24 24"
                         stroke-width={1.5}
                         stroke="currentColor"
+                        style={{ marginInline: "2rem" }}
                         width="1rem"
                         height="1rem"
                       >
@@ -155,7 +182,7 @@ export const TimeList = component$(() => {
                   <textarea
                     style={{ width: "20rem" }}
                     rows={3}
-                    placeholder="some explanatory description..."
+                    placeholder="some explanatory description of your plan..."
                     value={item.description}
                     onChange$={(e) => {
                       item.description = (e.target! as HTMLInputElement).value;
@@ -171,24 +198,15 @@ export const TimeList = component$(() => {
       </ul>
       <button
         onClick$={() => {
-          if (
-            store.timeList[store.timeList.length - 1].time.startTime !== "" &&
-            store.timeList[store.timeList.length - 1].time.endTime !== "" &&
-            store.timeList.length !== colors.length
-          ) {
-            store.timeList = [
-              ...store.timeList,
-              {
-                id:
-                  "this-time-entry-num" +
-                  (store.timeList.length + 1).toString() +
-                  "a",
-                time: { startTime: "", endTime: "" },
-                description: "",
-                isHere: false,
-              },
-            ];
-          }
+          store.timeList = [
+            ...store.timeList,
+            {
+              id: Math.random().toString(16).slice(3, -1),
+              time: { startTime: "", endTime: "" },
+              description: "",
+              isHere: false,
+            },
+          ];
         }}
         className="add-entry-button"
       >

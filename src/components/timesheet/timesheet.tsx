@@ -9,6 +9,7 @@ export const Timesheet = component$(() => {
 
       <h1>planningly</h1>
       <h3>no, but this time!</h3>
+      <h3>today</h3>
       <TimeList />
       <Footer />
     </>
